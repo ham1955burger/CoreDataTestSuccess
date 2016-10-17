@@ -61,22 +61,28 @@ extension BubbleChatViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         
-//        let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-//        /*
-//         if !(self.result?[indexPath.row].isReceived)! {
-//         alert.addAction(UIAlertAction(title: "수정 하기", style: .default, handler: { (action) in
-//         self.modifyObj(objectIndex: indexPath.row)
-//         }))
-//         }
-//         */
-//        
-//        alert.addAction(UIAlertAction(title: "삭제 하기", style: .default, handler: { (action) in
-//            self.deleteObj(objectIndex: indexPath.row)
-//            
-//        }))
-//        alert.addAction(UIAlertAction(title: "취소", style: .cancel, handler: nil))
-//        
-//        self.present(alert, animated: true, completion: nil)
+        if !(self.result?[indexPath.row].isReceived)! {
+            // 내가 보낸 메시지 일 경우
+            let alert = UIAlertController(title: nil, message: "수정 하시겠습니까?", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "예", style: .default, handler: { (action) in
+                self.updateObject(object: self.result![indexPath.row])
+            }))
+            alert.addAction(UIAlertAction(title: "아니요", style: .cancel, handler: nil))
+            self.present(alert, animated: true, completion: nil)
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        return true
+    }
+    
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == UITableViewCellEditingStyle.delete {
+            let chatObject: NSManagedObject = self.result![indexPath.row]
+            
+            appDelegate.managedObjectContext?.delete(chatObject)
+            self.saveObject()
+        }
     }
 }
 
@@ -96,26 +102,13 @@ extension BubbleChatViewController {
 //        self.storeTranscription(date: Date(), isReceived: false, message: "보내기 테스트", room: 1, sender: 1)
     }
     
-    @IBAction func actionSort(_ sender: AnyObject) {
-        // 정렬
-//        self.sortState = !self.sortState
-//        self.getTranscriptions()
-    }
-    
-    @IBAction func actionSearch(_ sender: AnyObject) {
-        // 검색
-    }
-    
-    @IBAction func deleteAllObject(_ sender: AnyObject) {
+    @IBAction func actionDeleteAllMessage(_ sender: AnyObject) {
         // 전체 삭제
-//        appDelegate.deleteAllData(entity: "BubbleTest") { (error) in
-//            if error == nil {
-//                self.getTranscriptions()
-//            } else {
-//                print("\(error)")
-//            }
-//        }
+        for chatObject: NSManagedObject in self.result! {
+            appDelegate.managedObjectContext?.delete(chatObject)
+        }
         
+        self.saveObject()
     }
 }
 
@@ -132,15 +125,15 @@ extension BubbleChatViewController {
         newChat.setValue(sender, forKey: "sender")
         newChat.setValue(self.roomObj, forKey: "room")
         
-        self.saveObject(object: newChat)
+        self.saveObject()
         
 //        self.roomObj!.setValue(NSSet.init(object: newChat), forKey: "chat")
 //        self.roomObj!.setValue(newChat, forKey: "chat")
     }
     
-    func saveObject(object: NSManagedObject) {
+    func saveObject() {
         do {
-            try object.managedObjectContext?.save()
+            try appDelegate.managedObjectContext?.save()
             self.getObjects()
             
         } catch {
@@ -152,6 +145,9 @@ extension BubbleChatViewController {
         do {
             //go get the results
             let fetchRequest: NSFetchRequest<Chat> = Chat.fetchRequest()
+            
+            // SELECT * FROM Chat WHERE room = "self.roomObj"
+            // 소문자 주의!!!!!!!!!
             let predicate = NSPredicate(format: "room == %@", self.roomObj!)
             fetchRequest.predicate = predicate
             
@@ -163,33 +159,9 @@ extension BubbleChatViewController {
         }
     }
     
-    func deleteObj(objectIndex: Int) {
-//        let context = appDelegate.managedObjectContext
-//        
-//        context?.delete(self.result![objectIndex])
-//        appDelegate.saveContext { (error) in
-//            if error == nil {
-//                self.getTranscriptions()
-//            } else {
-//                print(error)
-//            }
-//        }
-//        self.getTranscriptions()
-    }
-    
-    func modifyObj(objectIndex: Int) {
-//        let obj = self.result?[objectIndex]
-//        
-//        obj?.setValue("보내기 수정 테스트", forKey: "message")
-//        
-//        appDelegate.saveContext { (error) in
-//            if error == nil {
-//                self.getTranscriptions()
-//            } else {
-//                print(error)
-//            }
-//        }
-//        self.getTranscriptions()
+    func updateObject(object: NSManagedObject) {
+        object.setValue("보내기 수정 테스트", forKey: "message")
+        self.saveObject()
     }
 }
 
