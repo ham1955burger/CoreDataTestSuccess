@@ -116,14 +116,26 @@ extension BubbleChatViewController {
 
 extension BubbleChatViewController {
     func save(date: Date, isReceived: Bool, message: String, sender: Int) {
-        let entityDescription: NSEntityDescription = NSEntityDescription.entity(forEntityName: "Chat", in: appDelegate.managedObjectContext!)!
-        let newChat: NSManagedObject = NSManagedObject.init(entity: entityDescription, insertInto: appDelegate.managedObjectContext)
+        let chatDescription: NSEntityDescription = NSEntityDescription.entity(forEntityName: "Chat", in: appDelegate.managedObjectContext!)!
         
+        /*
+        // 직접 접근
+        let newChat: NSManagedObject = NSManagedObject.init(entity: chatDescription, insertInto: appDelegate.managedObjectContext)
         newChat.setValue(date, forKey: "date")
         newChat.setValue(isReceived, forKey: "isReceived")
         newChat.setValue(message, forKey: "message")
         newChat.setValue(sender, forKey: "sender")
         newChat.setValue(self.roomObj, forKey: "room")
+        */
+        
+        // ORM으로 접근
+        let chatRecord = Chat(entity: chatDescription, insertInto: appDelegate.managedObjectContext)
+        
+        chatRecord.date = date as NSDate?
+        chatRecord.isReceived = isReceived
+        chatRecord.message = message
+        chatRecord.sender = Int16(sender)
+        chatRecord.room = self.roomObj as! Room?
         
         self.saveObject()
         

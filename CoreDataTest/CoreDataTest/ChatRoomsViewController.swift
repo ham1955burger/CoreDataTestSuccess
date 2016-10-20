@@ -81,12 +81,19 @@ extension ChatRoomsViewController: UITableViewDelegate, UITableViewDataSource {
 // MARK: - Actions
 extension ChatRoomsViewController {
     @IBAction func actionAddRoom(_ sender: AnyObject) {
-        let entityDescription: NSEntityDescription = NSEntityDescription.entity(forEntityName: "Room", in: appDelegate.managedObjectContext!)!
-        let newRoom: NSManagedObject = NSManagedObject.init(entity: entityDescription, insertInto: appDelegate.managedObjectContext)
+        let roomDescription: NSEntityDescription = NSEntityDescription.entity(forEntityName: "Room", in: appDelegate.managedObjectContext!)!
         
+        /*
+        // 직접 접근
+        let newRoom: NSManagedObject = NSManagedObject.init(entity: roomDescription, insertInto: appDelegate.managedObjectContext)
         newRoom.setValue("\(self.result!.count + 1)번 방", forKey: "name")
-        
         self.saveObject(object: newRoom)
+        */
+        
+        // ORM으로 접근
+        let roomRecord = Room(entity: roomDescription, insertInto: appDelegate.managedObjectContext)
+        roomRecord.name = "\(self.result!.count + 1)번 방"
+        self.saveObject(object: roomRecord)
     }
 }
 
