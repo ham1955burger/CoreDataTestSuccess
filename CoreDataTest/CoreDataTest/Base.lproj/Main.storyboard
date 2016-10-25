@@ -28,11 +28,11 @@
                                         <rect key="frame" x="0.0" y="28" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="cTQ-IG-aux" id="DE4-LI-DNp">
-                                            <frame key="frameInset" width="375" height="43.5"/>
+                                            <frame key="frameInset" width="375" height="43"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="room's name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="xOH-UB-w35">
-                                                    <frame key="frameInset" minX="15" width="345" height="43.5"/>
+                                                    <frame key="frameInset" minX="15" width="345" height="43"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
@@ -105,9 +105,10 @@
                                         <rect key="frame" x="0.0" y="28" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="341-9c-Pht" id="HyO-eU-zaV">
-                                            <frame key="frameInset" width="375" height="44"/>
+                                            <frame key="frameInset" width="375" height="43"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="C7V-pQ-ASz"/>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2OD-vK-UG0">
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
@@ -120,14 +121,19 @@
                                                 </label>
                                             </subviews>
                                             <constraints>
+                                                <constraint firstItem="C7V-pQ-ASz" firstAttribute="top" secondItem="HyO-eU-zaV" secondAttribute="top" id="BKO-Sj-amm"/>
+                                                <constraint firstAttribute="trailing" secondItem="C7V-pQ-ASz" secondAttribute="trailing" id="Ek3-E7-BZo"/>
+                                                <constraint firstAttribute="bottom" secondItem="C7V-pQ-ASz" secondAttribute="bottom" id="H4G-6e-Eqc"/>
                                                 <constraint firstAttribute="trailingMargin" secondItem="G91-5q-7o1" secondAttribute="trailing" constant="7" id="HFy-kj-ogY"/>
                                                 <constraint firstAttribute="leadingMargin" secondItem="2OD-vK-UG0" secondAttribute="leading" id="ZPq-ln-Mwu"/>
+                                                <constraint firstItem="C7V-pQ-ASz" firstAttribute="leading" secondItem="HyO-eU-zaV" secondAttribute="leading" id="bzO-tZ-R7T"/>
                                                 <constraint firstItem="2OD-vK-UG0" firstAttribute="top" secondItem="HyO-eU-zaV" secondAttribute="topMargin" id="lYC-IR-FDZ"/>
                                                 <constraint firstItem="G91-5q-7o1" firstAttribute="top" secondItem="HyO-eU-zaV" secondAttribute="topMargin" id="mQD-Of-TnL"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
                                             <outlet property="dateLabel" destination="G91-5q-7o1" id="o0G-JL-cT8"/>
+                                            <outlet property="messageImage" destination="C7V-pQ-ASz" id="D1s-kY-bam"/>
                                             <outlet property="messageLabel" destination="2OD-vK-UG0" id="zNS-GT-9pq"/>
                                         </connections>
                                     </tableViewCell>

@@ -20,13 +20,15 @@ class ChatRoomsViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
-        self.getObjects()
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        self.getObjects()
     }
 }
 
@@ -55,9 +57,9 @@ extension ChatRoomsViewController: UITableViewDelegate, UITableViewDataSource {
         let cell = tableView.cellForRow(at: indexPath) as! ChatRoomsTableViewCell
         vc.title = cell.nameLabel.text
         
-        let roomObject: NSManagedObject = self.result![indexPath.row]
+//        let roomObject: NSManagedObject = self.result![indexPath.row]
 //        vc.roomObj2 = self.result![indexPath.row]
-        vc.roomObj = roomObject
+        vc.roomObj = self.result![indexPath.row]
         
         self.navigationController?.pushViewController(vc, animated: true)
     }
@@ -81,6 +83,7 @@ extension ChatRoomsViewController: UITableViewDelegate, UITableViewDataSource {
 // MARK: - Actions
 extension ChatRoomsViewController {
     @IBAction func actionAddRoom(_ sender: AnyObject) {
+        // get Room entity
         let roomDescription: NSEntityDescription = NSEntityDescription.entity(forEntityName: "Room", in: appDelegate.managedObjectContext!)!
         
         /*
@@ -92,7 +95,8 @@ extension ChatRoomsViewController {
         
         // ORM으로 접근
         let roomRecord = Room(entity: roomDescription, insertInto: appDelegate.managedObjectContext)
-        roomRecord.name = "\(self.result!.count + 1)번 방"
+        roomRecord.updateDate = NSDate()
+        roomRecord.name = "Chat room test"
         self.saveObject(object: roomRecord)
     }
 }
@@ -101,33 +105,40 @@ extension ChatRoomsViewController {
 extension ChatRoomsViewController {
     func saveObject(object: NSManagedObject) {
         do {
+            // record save
             try object.managedObjectContext?.save()
             self.getObjects()
             
         } catch {
+            // save error
             print("Error with request: \(error)")
         }
     }
     
     func getObjects() {
         do {
-            //go get the results
-            self.result = try appDelegate.managedObjectContext!.fetch(Room.fetchRequest())
-            self.tableView.reloadData()
+            let fetchRequest: NSFetchRequest<Room> = Room.fetchRequest()
             
-            /*
-             //I like to check the size of the returned results!
-             print ("num of results = \(searchResults.count)")
-             
-             //You need to convert to NSManagedObject to use 'for' loops
-             for trans in searchResults as [NSManagedObject] {
-             //get the Key Value pairs (although there may be a better way to do that...
-             print("\(trans.value(forKey: "message"))")
-             }
-             */
+            ///go get the results
+            fetchRequest.sortDescriptors = [NSSortDescriptor(key: "updateDate", ascending: false)]
+            
+            self.result = try appDelegate.managedObjectContext!.fetch(fetchRequest)
+            
+            self.tableView.reloadData()
         } catch {
             print("Error with request: \(error)")
         }
+        
+        /*
+         //I like to check the size of the returned results!
+         print ("num of results = \(searchResults.count)")
+         
+         //You need to convert to NSManagedObject to use 'for' loops
+         for trans in searchResults as [NSManagedObject] {
+         //get the Key Value pairs (although there may be a better way to do that...
+         print("\(trans.value(forKey: "message"))")
+         }
+         */
     }
 }
 

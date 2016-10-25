@@ -2,7 +2,7 @@
 //  Room+CoreDataProperties.swift
 //  CoreDataTest
 //
-//  Created by ouniwang on 10/17/16.
+//  Created by ouniwang on 10/21/16.
 //  Copyright © 2016 ham. All rights reserved.
 //
 
@@ -16,6 +16,7 @@ extension Room {
     }
 
     @NSManaged public var name: String?
+    @NSManaged public var updateDate: NSDate?
     @NSManaged public var chat: NSOrderedSet?
 
 }

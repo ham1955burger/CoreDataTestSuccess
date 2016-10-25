@@ -34,6 +34,7 @@
 		CE192C951DB499DD007DB335 /* BubbleChatViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BubbleChatViewController.swift; sourceTree = "<group>"; };
 		CE192C9B1DB4B98D007DB335 /* Room+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Room+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		CE192C9C1DB4B98D007DB335 /* Chat+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Chat+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		CE3FED531DBF085200FEFEB9 /* CoreDataTest 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "CoreDataTest 2.xcdatamodel"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -331,6 +332,7 @@
 				CE192C8B1DB47A97007DB335 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 
@@ -338,9 +340,10 @@
 		CE192C7E1DB47A96007DB335 /* CoreDataTest.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				CE3FED531DBF085200FEFEB9 /* CoreDataTest 2.xcdatamodel */,
 				CE192C7F1DB47A96007DB335 /* CoreDataTest.xcdatamodel */,
 			);
-			currentVersion = CE192C7F1DB47A96007DB335 /* CoreDataTest.xcdatamodel */;
+			currentVersion = CE3FED531DBF085200FEFEB9 /* CoreDataTest 2.xcdatamodel */;
 			path = CoreDataTest.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;

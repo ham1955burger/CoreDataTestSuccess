@@ -2,7 +2,7 @@
 //  Chat+CoreDataProperties.swift
 //  CoreDataTest
 //
-//  Created by ouniwang on 10/17/16.
+//  Created by ouniwang on 10/25/16.
 //  Copyright © 2016 ham. All rights reserved.
 //
 
@@ -15,10 +15,11 @@ extension Chat {
         return NSFetchRequest<Chat>(entityName: "Chat");
     }
 
-    @NSManaged public var sender: Int16
     @NSManaged public var isReceived: Bool
     @NSManaged public var message: String?
-    @NSManaged public var date: NSDate?
+    @NSManaged public var sendDate: NSDate?
+    @NSManaged public var sender: Int16
+    @NSManaged public var image: NSData?
     @NSManaged public var room: Room?
 
 }

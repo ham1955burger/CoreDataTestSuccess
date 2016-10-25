@@ -62,17 +62,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         var coordinator: NSPersistentStoreCoordinator? = NSPersistentStoreCoordinator(managedObjectModel: self.managedObjectModel)
         let url = self.applicationDocumentsDirectory.appendingPathComponent("CoreDataTest.sqlite")
         
-        print("2222222")
+        // CoreDataTest.sqlite file path
+        print("-------")
         print(url)
-        print("222222")
+        print("-------")
         
         var error: NSError? = nil
         var failureReason = "There was an error creating or loading the application's saved data."
+        
+        // auto migration options
         let mOptions = [NSMigratePersistentStoresAutomaticallyOption: true,
                         NSInferMappingModelAutomaticallyOption: true]
         
         do
         {
+            //option에 auto migration options 추가
             try coordinator!.addPersistentStore(ofType: NSSQLiteStoreType, configurationName: nil, at: url, options: mOptions)
         } catch let error as NSError {
             coordinator = nil

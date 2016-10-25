@@ -14,7 +14,7 @@ class BubbleChatViewController: UIViewController {
     @IBOutlet weak var emptyLabel: UILabel!
     @IBOutlet weak var tableView: UITableView!
     
-    var roomObj: NSManagedObject?
+    var roomObj: Room?
 //    var roomObj2: Room?
     
     var result: [Chat]?
@@ -47,12 +47,18 @@ extension BubbleChatViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "TestTableViewCell") as! TestTableViewCell
         
+        if let image = self.result?[indexPath.row].image {
+            // 이미지가 있는 message일 경우
+            
+            cell.messageImage.image = UIImage(data: image as Data)
+        }
+
         cell.messageLabel.text = self.result?[indexPath.row].message
         
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
         
-        let currentDate: String = dateFormatter.string(from: (self.result?[indexPath.row].date)! as Date)
+        let currentDate: String = dateFormatter.string(from: (self.result?[indexPath.row].sendDate)! as Date)
         cell.dateLabel.text = currentDate
         
         return cell
@@ -79,7 +85,6 @@ extension BubbleChatViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == UITableViewCellEditingStyle.delete {
             let chatObject: NSManagedObject = self.result![indexPath.row]
-            
             appDelegate.managedObjectContext?.delete(chatObject)
             self.saveObject()
         }
@@ -92,14 +97,26 @@ extension BubbleChatViewController: UITableViewDelegate, UITableViewDataSource {
 extension BubbleChatViewController {
     @IBAction func actionReceive(_ sender: AnyObject) {
         // 받기
-        self.save(date: Date(), isReceived: true, message: "받기 테스트", sender: 2)
-//        self.storeTranscription(date: Date(), isReceived: true, message: "받기 테스트", room: 1, sender: 2)
+        let alert = UIAlertController(title: nil, message: "이미지를 첨부 test?", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "예", style: .default, handler: { (action) in
+            self.save(date: Date(), isReceived: true, message: "받기 테스트", sender: 2, image: UIImage(named: "apple"))
+        }))
+        alert.addAction(UIAlertAction(title: "아니요", style: .cancel, handler: { (action) in
+            self.save(date: Date(), isReceived: true, message: "받기 테스트", sender: 2)
+        }))
+        self.present(alert, animated: true, completion: nil)
     }
     
     @IBAction func actionSend(_ sender: AnyObject) {
         // 보내기
-        self.save(date: Date(), isReceived: false, message: "보내기 테스트", sender: 1)
-//        self.storeTranscription(date: Date(), isReceived: false, message: "보내기 테스트", room: 1, sender: 1)
+        let alert = UIAlertController(title: nil, message: "이미지를 첨부 test?", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "예", style: .default, handler: { (action) in
+            self.save(date: Date(), isReceived: false, message: "보내기 테스트", sender: 1, image: UIImage(named: "apple"))
+        }))
+        alert.addAction(UIAlertAction(title: "아니요", style: .cancel, handler: { (action) in
+            self.save(date: Date(), isReceived: false, message: "보내기 테스트", sender: 1)
+        }))
+        self.present(alert, animated: true, completion: nil)
     }
     
     @IBAction func actionDeleteAllMessage(_ sender: AnyObject) {
@@ -115,7 +132,8 @@ extension BubbleChatViewController {
 // MARK: - Functions
 
 extension BubbleChatViewController {
-    func save(date: Date, isReceived: Bool, message: String, sender: Int) {
+    func save(date: Date, isReceived: Bool, message: String, sender: Int, image: UIImage? = nil) {
+        // get Chat entity
         let chatDescription: NSEntityDescription = NSEntityDescription.entity(forEntityName: "Chat", in: appDelegate.managedObjectContext!)!
         
         /*
@@ -131,11 +149,20 @@ extension BubbleChatViewController {
         // ORM으로 접근
         let chatRecord = Chat(entity: chatDescription, insertInto: appDelegate.managedObjectContext)
         
-        chatRecord.date = date as NSDate?
+        if image != nil {
+            chatRecord.image = NSData(data: UIImagePNGRepresentation(image!)!)
+        }
+        
+        
+        chatRecord.sendDate = date as NSDate?
         chatRecord.isReceived = isReceived
         chatRecord.message = message
         chatRecord.sender = Int16(sender)
-        chatRecord.room = self.roomObj as! Room?
+        // Chat과 1:N 관계를 가질 roomObj
+        chatRecord.room = self.roomObj
+        
+        // room object의 udpateDate를 변경(for room sort)
+        self.roomObj?.updateDate = chatRecord.sendDate
         
         self.saveObject()
         
@@ -155,15 +182,25 @@ extension BubbleChatViewController {
     
     func getObjects() {
         do {
-            //go get the results
+            // get Chat records
             let fetchRequest: NSFetchRequest<Chat> = Chat.fetchRequest()
             
             // SELECT * FROM Chat WHERE room = "self.roomObj"
             // 소문자 주의!!!!!!!!!
+            // 해당 roomObj를 ForeignKey로 가지는 Chat들만 조회
             let predicate = NSPredicate(format: "room == %@", self.roomObj!)
             fetchRequest.predicate = predicate
             
             self.result = try appDelegate.managedObjectContext!.fetch(fetchRequest)
+
+            /*
+            print("-----")
+            for record in self.result! as [Chat] {
+                print(record.message)
+            }
+            print("-----")
+            */
+            
             
             self.tableView.reloadData()
         } catch {
@@ -171,13 +208,15 @@ extension BubbleChatViewController {
         }
     }
     
-    func updateObject(object: NSManagedObject) {
-        object.setValue("보내기 수정 테스트", forKey: "message")
+    func updateObject(object: Chat) {
+//        object.setValue("보내기 수정 테스트", forKey: "message")
+        object.message = "보내기 수정 테스트"
         self.saveObject()
     }
 }
 
 class TestTableViewCell: UITableViewCell {
+    @IBOutlet weak var messageImage: UIImageView!
     @IBOutlet weak var messageLabel: UILabel!
     @IBOutlet weak var dateLabel: UILabel!
 }
