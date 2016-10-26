@@ -8,6 +8,7 @@
 
 import UIKit
 import CoreData
+import ChattoAdditions
 
 let appDelegate = UIApplication.shared.delegate as! AppDelegate
 
@@ -52,14 +53,19 @@ extension ChatRoomsViewController: UITableViewDelegate, UITableViewDataSource {
         tableView.deselectRow(at: indexPath, animated: true)
         
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
+//        let vc = storyboard.instantiateViewController(withIdentifier: "ChatViewController") as! ChatViewController
         let vc = storyboard.instantiateViewController(withIdentifier: "BubbleChatViewController") as! BubbleChatViewController
         
         let cell = tableView.cellForRow(at: indexPath) as! ChatRoomsTableViewCell
         vc.title = cell.nameLabel.text
         
-//        let roomObject: NSManagedObject = self.result![indexPath.row]
-//        vc.roomObj2 = self.result![indexPath.row]
-        vc.roomObj = self.result![indexPath.row]
+        let roomObj = self.result![indexPath.row]
+        vc.roomObj = roomObj
+        
+//        let dataSource = FakeDataSource(count: (roomObj.chat?.count)!, pageSize: 50)
+        let dataSource = FakeDataSource(messages: createMessages(roomObj: roomObj), pageSize: 50)
+        vc.dataSource = dataSource
+        vc.messageSender = dataSource.messageSender
         
         self.navigationController?.pushViewController(vc, animated: true)
     }
@@ -96,12 +102,13 @@ extension ChatRoomsViewController {
         // ORM으로 접근
         let roomRecord = Room(entity: roomDescription, insertInto: appDelegate.managedObjectContext)
         roomRecord.updateDate = NSDate()
-        roomRecord.name = "Chat room test"
+        roomRecord.name = "\(self.result!.count + 1)번 방"
         self.saveObject(object: roomRecord)
     }
 }
 
 // MARK: - Funtions
+
 extension ChatRoomsViewController {
     func saveObject(object: NSManagedObject) {
         do {

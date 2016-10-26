@@ -1,0 +1,30 @@
+{
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "AB1BBBCC201A5338DA1649B8A409E2E420A818B9",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "AB1BBBCC201A5338DA1649B8A409E2E420A818B9" : 9223372036854775807,
+    "72C30AC1FFC6CE33712D417AA97089EC8818F42E" : 9223372036854775807
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "C6A22E49-06B9-42D4-9344-C8E7889923D1",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "AB1BBBCC201A5338DA1649B8A409E2E420A818B9" : "CoreDataTestSuccess\/",
+    "72C30AC1FFC6CE33712D417AA97089EC8818F42E" : "coreDataTest\/"
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "CoreDataTest",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 204,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "CoreDataTest\/CoreDataTest.xcworkspace",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/ham1955burger\/coreDataTest.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "72C30AC1FFC6CE33712D417AA97089EC8818F42E"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/ham1955burger\/CoreDataTestSuccess.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "AB1BBBCC201A5338DA1649B8A409E2E420A818B9"
+    }
+  ]
+}

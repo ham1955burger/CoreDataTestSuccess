@@ -1,0 +1,12 @@
+# Uncomment the next line to define a global platform for your project
+platform :ios, '9.0'
+
+target 'CoreDataTest' do
+  # Comment the next line if you're not using Swift and don't want to use dynamic frameworks
+  use_frameworks!
+
+  # Pods for CoreDataTest
+  pod 'Chatto', '= 3.0.0'
+  pod 'ChattoAdditions', '= 3.0.0' # if you want to use the cells or the input component
+
+end

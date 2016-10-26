@@ -1,0 +1,16 @@
+PODS:
+  - Chatto (3.0.0)
+  - ChattoAdditions (3.0.0):
+    - Chatto
+
+DEPENDENCIES:
+  - Chatto (= 3.0.0)
+  - ChattoAdditions (= 3.0.0)
+
+SPEC CHECKSUMS:
+  Chatto: c6b8f22892f8b4899d161984b882da69e61d3906
+  ChattoAdditions: 262514a5d932ad1c04966319b99226416aec46b1
+
+PODFILE CHECKSUM: 50170a5a6779a83c0c8f7d6a53ce2d2483620615
+
+COCOAPODS: 1.1.0.rc.2
